@@ -5,7 +5,6 @@
  #  Date: 9/10/2018
  #  Description:  Used to setup runners/jobs for librustzcash
  #  Usage: Commit source and the pipeline will trigger the according jobs.
- #         For now the build and test are done in the same jobs.
  #
  #  Known bugs/missing features:
  #
@@ -21,6 +20,7 @@ rust-latest:
   image: rust:latest
   script:
     - cargo --verbose --version
+    - rustc --verbose --version
     - time cargo build --verbose
 
 #Ignore the nightly debug CI job for now (9/18/2018)
@@ -35,6 +35,7 @@ rust-nightly:
   image: rustlang/rust:nightly
   script:
     - cargo --verbose --version
+    - rustc --verbose --version
     - cargo build --verbose
   allow_failure: true
 
@@ -50,16 +51,16 @@ librustzcash-test-latest:
   stage: test
   image: rust:latest
   script:
-    - cd librustzcash/
     - cargo --verbose --version
+    - rustc --verbose --version
     - time cargo test --release --verbose
 
 librustzcash-test-rust-nightly:
   stage: test
   image: rustlang/rust:nightly
   script:
-    - cd librustzcash/
     - cargo --verbose --version
+    - rustc --verbose --version
     - cargo test --release --verbose
   allow_failure: true
 
@@ -67,8 +68,8 @@ librustzcash-rust-rc:
   stage: deploy
   image: rust:latest
   script:
-    - cd librustzcash/
     - cargo --verbose --version
+    - rustc --verbose --version
     - time cargo build --release --verbose
     - time cargo test --release --verbose
     - cargo doc --verbose
@@ -78,8 +79,8 @@ librustzcash-rust-nightly-rc:
   stage: deploy
   image: rustlang/rust:nightly
   script:
-    - cd librustzcash/
     - cargo --verbose --version
+    - rustc --verbose --version
     - cargo build --release --verbose
     - cargo test --release --verbose
   allow_failure: true
